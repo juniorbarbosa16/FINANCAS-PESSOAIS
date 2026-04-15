@@ -686,10 +686,10 @@ main{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
   <div class="notif-bar" id="notif-bar"></div>
 
   <div class="mobile-nav">
-    <button class="mob-tab active" onclick="showSection('dashboard')"><span class="ico">🏠</span>Início</button>
+    <button class="mob-tab" onclick="showSection('chat')"><span class="ico">🤖</span>Chat IA</button>
+    <button class="mob-tab" onclick="showSection('dashboard')"><span class="ico">🏠</span>Início</button>
     <button class="mob-tab" onclick="showSection('transacoes')"><span class="ico">💸</span>Gastos</button>
     <button class="mob-tab" onclick="showSection('lembretes')"><span class="ico">🔔</span>Alertas</button>
-    <button class="mob-tab" onclick="showSection('chat')"><span class="ico">🤖</span>Chat IA</button>
     <button class="mob-tab" onclick="showSection('perfil')"><span class="ico">👤</span>Perfil</button>
   </div>
 </div>
@@ -1021,7 +1021,7 @@ function showSection(id){
   const tabs=['dashboard','transacoes','orcamento','dividas','investimentos','metas','relatorios','perfil'];
   const idx=tabs.indexOf(id);
   document.querySelectorAll('.nav-tab')[idx]?.classList.add('active');
-  const mobMap={dashboard:0,transacoes:1,dividas:2,investimentos:3,perfil:4};
+  const mobMap={chat:0,dashboard:1,transacoes:2,lembretes:3,perfil:4};
   if(mobMap[id]!==undefined)document.querySelectorAll('.mob-tab')[mobMap[id]]?.classList.add('active');
   refresh();
 }
@@ -1592,19 +1592,16 @@ let chatFotoBase64='';
 let chatFotoMime='';
 let chatMsgs=[];
 
-function getApiKey(){ return localStorage.getItem('anthropic_key')||''; }
-function salvarApiKey(){
-  const k=(document.getElementById('chat-apikey').value||'').trim();
-  if(!k||!k.startsWith('sk-')){alert('Chave inválida. Deve começar com sk-');return;}
-  localStorage.setItem('anthropic_key',k);
-  atualizarUIApiKey();
-  showToast('API Key salva!','ok');
-}
-function resetApiKey(){ localStorage.removeItem('anthropic_key'); atualizarUIApiKey(); }
+// API Key compartilhada pela família
+const _AKEY='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';
+function getApiKey(){ return _AKEY; }
+function salvarApiKey(){ atualizarUIApiKey(); }
+function resetApiKey(){ atualizarUIApiKey(); }
 function atualizarUIApiKey(){
-  const ok=!!getApiKey();
-  document.getElementById('chat-cfg-bar').style.display=ok?'none':'flex';
-  document.getElementById('chat-apikey-ok').style.display=ok?'block':'none';
+  const bar=document.getElementById('chat-cfg-bar');
+  const ok=document.getElementById('chat-apikey-ok');
+  if(bar) bar.style.display='none';
+  if(ok){ ok.style.display='block'; ok.innerHTML='✅ Chat IA ativo para toda a família 🤖'; }
 }
 
 function usarPill(el){
@@ -1952,3 +1949,4 @@ function mostrarToastLembretes(itens){
 </script>
 </body>
 </html>
+
