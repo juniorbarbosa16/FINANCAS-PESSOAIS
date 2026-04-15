@@ -631,9 +631,13 @@ main{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
             <button onclick="limparFoto()">×</button>
           </div>
           <div class="chat-input-row">
-            <label class="btn-chat-foto" title="Enviar foto">
+            <label class="btn-chat-foto" title="Abrir câmera">
               📷
-              <input type="file" id="chat-file" accept="image/*" style="display:none" onchange="onFotoSelecionada(this)">
+              <input type="file" id="chat-file" accept="image/*" capture="environment" style="display:none" onchange="onFotoSelecionada(this)">
+            </label>
+            <label class="btn-chat-foto" title="Escolher da galeria">
+              🖼️
+              <input type="file" id="chat-file-gallery" accept="image/*" style="display:none" onchange="onFotoSelecionada(this)">
             </label>
             <textarea id="chat-txt" placeholder="Ex: gastei 50 reais no mercado..." rows="1"
               onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();enviarChat()}"
@@ -1642,6 +1646,8 @@ function limparFoto(){
   document.getElementById('chat-img-preview').style.display='none';
   document.getElementById('chat-preview-thumb').src='';
   document.getElementById('chat-file').value='';
+  const g=document.getElementById('chat-file-gallery');
+  if(g) g.value='';
 }
 
 function addMsg(role,html,imgSrc=''){
