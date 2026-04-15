@@ -327,9 +327,11 @@ main{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
 .chat-pill{padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:99px;font-size:11px;color:var(--muted);cursor:pointer;transition:all 0.15s;}
 .chat-pill:hover{border-color:var(--accent);color:var(--accent);}
 
-.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:8px 2px calc(8px + env(safe-area-inset-bottom));z-index:100;justify-content:space-around;}
-@media(max-width:680px){.mobile-nav{display:flex;}}
-.mob-tab{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:9px;padding:4px 8px;border-radius:var(--radius-xs);transition:all 0.15s;}
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:100;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.mobile-nav::-webkit-scrollbar{display:none;}
+@media(max-width:1080px){.mobile-nav{display:flex;}}
+.mobile-nav-inner{display:flex;align-items:center;gap:0;min-width:max-content;padding:0 8px;}
+.mob-tab{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:9px;padding:4px 12px;border-radius:var(--radius-xs);transition:all 0.15s;flex-shrink:0;white-space:nowrap;}
 .mob-tab.active{color:var(--accent);}
 .mob-tab .ico{font-size:18px;}
 /* LEMBRETES */
@@ -686,11 +688,18 @@ main{max-width:1100px;margin:0 auto;padding:24px 16px 80px;}
   <div class="notif-bar" id="notif-bar"></div>
 
   <div class="mobile-nav">
-    <button class="mob-tab" onclick="showSection('chat')"><span class="ico">🤖</span>Chat IA</button>
-    <button class="mob-tab" onclick="showSection('dashboard')"><span class="ico">🏠</span>Início</button>
-    <button class="mob-tab" onclick="showSection('transacoes')"><span class="ico">💸</span>Gastos</button>
-    <button class="mob-tab" onclick="showSection('lembretes')"><span class="ico">🔔</span>Alertas</button>
-    <button class="mob-tab" onclick="showSection('perfil')"><span class="ico">👤</span>Perfil</button>
+    <div class="mobile-nav-inner">
+      <button class="mob-tab" onclick="showSection('chat')"><span class="ico">🤖</span>Chat IA</button>
+      <button class="mob-tab" onclick="showSection('dashboard')"><span class="ico">🏠</span>Início</button>
+      <button class="mob-tab" onclick="showSection('transacoes')"><span class="ico">💸</span>Gastos</button>
+      <button class="mob-tab" onclick="showSection('orcamento')"><span class="ico">📊</span>Orçamento</button>
+      <button class="mob-tab" onclick="showSection('dividas')"><span class="ico">💳</span>Dívidas</button>
+      <button class="mob-tab" onclick="showSection('investimentos')"><span class="ico">📈</span>Invest.</button>
+      <button class="mob-tab" onclick="showSection('metas')"><span class="ico">🎯</span>Metas</button>
+      <button class="mob-tab" onclick="showSection('relatorios')"><span class="ico">📋</span>Relatórios</button>
+      <button class="mob-tab" onclick="showSection('lembretes')"><span class="ico">🔔</span>Alertas</button>
+      <button class="mob-tab" onclick="showSection('perfil')"><span class="ico">👤</span>Perfil</button>
+    </div>
   </div>
 </div>
 
@@ -1021,7 +1030,7 @@ function showSection(id){
   const tabs=['dashboard','transacoes','orcamento','dividas','investimentos','metas','relatorios','perfil'];
   const idx=tabs.indexOf(id);
   document.querySelectorAll('.nav-tab')[idx]?.classList.add('active');
-  const mobMap={chat:0,dashboard:1,transacoes:2,lembretes:3,perfil:4};
+  const mobMap={chat:0,dashboard:1,transacoes:2,orcamento:3,dividas:4,investimentos:5,metas:6,relatorios:7,lembretes:8,perfil:9};
   if(mobMap[id]!==undefined)document.querySelectorAll('.mob-tab')[mobMap[id]]?.classList.add('active');
   refresh();
 }
@@ -1593,7 +1602,7 @@ let chatFotoMime='';
 let chatMsgs=[];
 
 // API Key compartilhada pela família
-const _AKEY='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';
+const _AKEY='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';
 function getApiKey(){ return _AKEY; }
 function salvarApiKey(){ atualizarUIApiKey(); }
 function resetApiKey(){ atualizarUIApiKey(); }
@@ -1949,4 +1958,6 @@ function mostrarToastLembretes(itens){
 </script>
 </body>
 </html>
+
+
 
